@@ -1,0 +1,7 @@
+
+Capture domain names and the country code
+(?:https?\:\/\/)?(?:[A-z0-9]+\.)*([A-z0-9]+)\.(?:com|net|org|edu|gov|mil|int|shtml)(?:\.([A-z]{2}))?'
+
+In                                Out
+translate.google.com              google
+https://m.youtube.com.sg          youtube, sg
