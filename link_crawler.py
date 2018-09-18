@@ -25,24 +25,31 @@ def download(url,user_agent = "iphone Xs",retry = 2):
 
 def link_crawler(start_url, link_regex):
   queue = [start_url]
+  crawled = set()
   while queue:
     url = queue.pop()
-    html = download(url)
-    if html is not None:
-      continue
-    for link in get_links(html):
-      if re.match(link_regex,link):
-        queue.append(link)
+    if url[0] == "/":
+      url = start_url + url
+    if url not in crawled:
+      html = download(url)
+      if html is None:
+        continue
+      for link in get_links(html):
+        if re.match(link_regex,link):
+          queue.append(link)
+      crawled.add(url)
 
 def get_links(html):
-  page_regex = re.compile(r'<a +href ?= ?[\"\'](.*?)[\"\']',re.IGNORECASE)
-  for page in page_regex.findall(html):
-    print(page)
-  return None
+  # This regex ignores javascript links, emails and anchors within pages
+  page_regex = re.compile(r'<a +href ?= ?[\"\']([^#|(?:javascript|mailto)].*?)[\"\']',re.IGNORECASE)
+  return page_regex.findall(html)
 
+def parse_url(url):
+  url_parser = re.compile(r'(?:https?\:\/\/)?(?:[A-z0-9]+\.)*([A-z0-9]+)\.(?:com|net|org|edu|gov|mil|int)(?:\.([A-z]{2}))?',re.IGNORECASE)
+  domain,country = url_parser.findall(url)[0]
+  print(domain,country)
 
 if __name__ == "__main__":
-  url = "https://serebii.net"
-  html = download(url)
-  get_links(html)
-  link_crawler(url,re.compile(r'.',re.IGNORECASE))
+  url = "https://serebii.net.sg"
+  parse_url(url)
+  #link_crawler(url,re.compile(r'.',re.IGNORECASE))
