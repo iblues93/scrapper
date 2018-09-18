@@ -5,3 +5,6 @@ Capture domain names and the country code
 In                                Out
 translate.google.com              google
 https://m.youtube.com.sg          youtube, sg
+
+Captures the link of href attributes of anchor tags. This ignores Javascript and mailto addresses
+<a +href ?= ?[\"\']([^#|(?:javascript|mailto)].*?)[\"\']
