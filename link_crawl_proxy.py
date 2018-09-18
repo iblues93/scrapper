@@ -21,8 +21,8 @@ def download(url,user_agent = "iphone Xs",retry = 2,charset='utf-8',proxy = None
       proxy_sup = urlreq.ProxyHandler({'http':proxy})
       opener = urlreq.build_opener(proxy_sup)
       urlreq.install_opener(opener)
-    resp = urlreq.urlopen(request).read()
-    cs.resp.headers.get_content_charset()
+    resp = urlreq.urlopen(request)
+    cs = resp.headers.get_content_charset()
     if not cs:
       cs = charset
     html = resp.read().decode(cs)
@@ -74,5 +74,5 @@ def link_crawler(start_url, link_regex, robot_url = None,user_agent = "Definitel
 
 if __name__ == "__main__":
   url = "http://example.webscraping.com"
-  url_parser = re.compile(r'/(index|view)/',re.IGNORECASE)
-  link_crawler(url,url_parser,user_agent = "BadCrawler")
+  url_parser = re.compile(r'(/.+)*/(index|view)/?',re.IGNORECASE)
+  link_crawler(url,url_parser,user_agent = "GoodCrawler")
