@@ -15,18 +15,12 @@ class Throttle:
   
   def wait(self,url):
     domain = urlparse(url).netloc
-    try:
-      last_accessed = self.domains.get(domain)
-      if self.delay > 0  and last_accessed is not None:
-        sleep_sec = self.delay - (time.time() - last_accessed)
-        if sleep_sec > 0:
-          time.sleep(sleep_sec)
-      self.domains[domain] = time.time()
-    except Exception:
-      self.add(domain)
-
-  def add(self,domain):
-    self.domains[domain] = 0
+    last_accessed = self.domains.get(domain)
+    if self.delay > 0  and last_accessed is not None:
+      sleep_sec = self.delay - (time.time() - last_accessed)
+      if sleep_sec > 0:
+        time.sleep(sleep_sec)
+    self.domains[domain] = time.time()
 
 def get_robot_parser(url):
   rp = robotparser.RobotFileParser()
